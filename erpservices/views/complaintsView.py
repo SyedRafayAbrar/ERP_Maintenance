@@ -66,13 +66,16 @@ def addComplaintsSubject(request):
 @authentication_classes([SessionAuthentication, TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def addComplaints(request):
+    userSe = serializers.UserSerializer(request.user)
     serializer = serializers.Complaints_Serializer(data= request.data)
     if serializer.is_valid():
         serializer.save()
         complaints = models.Complaints.objects.all().last()
         compStatusSerializer = serializers.Complaints_Status_Serializer(data={"status":1, "complaints":complaints.id})
-        if compStatusSerializer.is_valid():
+        comp_userStatusSerializer = serializers.Complaints_User_Serializer(data={"user":request.user.id, "complaints":complaints.id})
+        if compStatusSerializer.is_valid() and comp_userStatusSerializer.is_valid():
             compStatusSerializer.save()
+            comp_userStatusSerializer.save()
             return ResponseGenerator(status=status.HTTP_200_OK, data=compStatusSerializer.data).generate_response()
         else:
             return ResponseGenerator(status=status.HTTP_400_BAD_REQUEST,data={"error": "compStatusSerializer error"},error=compStatusSerializer.errors).generate_response()    
@@ -125,7 +128,19 @@ def updateComplaintStatus(request):
             return ResponseGenerator(status=status.HTTP_400_BAD_REQUEST, data={}, error="invalid status").generate_response()
     else:
         return ResponseGenerator(status=status.HTTP_200_OK, data={"params":"No"}).generate_response()
-    
+  
+
+@api_view(['DELETE'])
+@authentication_classes([SessionAuthentication, TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def deleteAllComplaint(request):
+    try:
+        allObj = models.Complaints.objects.all()
+        # allObj.delete()
+        for x in allObj.iterator(): x.delete()
+        return ResponseGenerator(status=status.HTTP_200_OK, data={"message": "Complaint Deleted successfully"}).generate_response()
+    except Exception as e:
+        return ResponseGenerator(status=status.HTTP_500_INTERNAL_SERVER_ERROR, data={},error=str(e)).generate_response()  
 
 @api_view(['DELETE'])
 @authentication_classes([SessionAuthentication, TokenAuthentication])

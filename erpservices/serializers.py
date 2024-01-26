@@ -80,6 +80,11 @@ class  Complaints_Serializer(serializers.ModelSerializer):
         fields = "__all__"
         depth = 1
         
+class  Complaints_User_Serializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Complaints_User
+        fields = "__all__"
+        
 class  Complaints_Subject_Serializer(serializers.ModelSerializer):
     class Meta:
         model = models.Complaints_Subject

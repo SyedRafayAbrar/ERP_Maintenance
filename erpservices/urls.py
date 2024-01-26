@@ -34,4 +34,5 @@ urlpatterns = [
     re_path('add_complaint_status_type', complaintsView.addComplaintStatusType),
     re_path('add_complaint_status', complaintsView.addComplaintStatus),
     re_path('delete_complaint', complaintsView.deleteComplaint),
+    re_path('delete_all_complaints', complaintsView.deleteAllComplaint),
 ]
