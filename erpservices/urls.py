@@ -26,6 +26,8 @@ urlpatterns = [
     
     re_path('add_notification_type', notificationView.addNotificationType),
     re_path('add_notification', notificationView.addNotifications),
+    re_path('get_notifications', notificationView.getAllNotifications),
+    re_path('get_user_notifications', notificationView.getAllUserNotifications),
     
     re_path('update_complaints_status', complaintsView.updateComplaintStatus),
     re_path('get_complaints', complaintsView.getAllComplaints),

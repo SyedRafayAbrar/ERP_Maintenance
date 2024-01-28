@@ -5,11 +5,19 @@ from .. import serializers
 from rest_framework import status
 from .. import models
 from ..responseGenerator import ResponseGenerator
-
+from django.db.models import Q
 
 @api_view(['GET'])
 def getAllNotifications(request):
     data = models.NotificationModel.objects.all()
+    serializer = serializers.Notification_Serializer(data, many=True)
+    return ResponseGenerator(status=status.HTTP_200_OK, data=serializer.data).generate_response()
+
+@api_view(['GET'])
+@authentication_classes([SessionAuthentication, TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def getAllUserNotifications(request):
+    data = models.NotificationModel.objects.filter(Q(receiver_id=request.user.id) | Q(receiver_id=None))
     serializer = serializers.Notification_Serializer(data, many=True)
     return ResponseGenerator(status=status.HTTP_200_OK, data=serializer.data).generate_response()
 

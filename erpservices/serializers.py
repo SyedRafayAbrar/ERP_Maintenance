@@ -57,6 +57,7 @@ class  Notification_Serializer(serializers.ModelSerializer):
     class Meta:
         model = models.NotificationModel
         fields = "__all__"
+        depth = 1
         
         
 class  Notification_Type_Serializer(serializers.ModelSerializer):

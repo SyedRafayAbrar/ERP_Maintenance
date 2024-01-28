@@ -66,7 +66,6 @@ def addComplaintsSubject(request):
 @authentication_classes([SessionAuthentication, TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def addComplaints(request):
-    userSe = serializers.UserSerializer(request.user)
     serializer = serializers.Complaints_Serializer(data= request.data)
     if serializer.is_valid():
         serializer.save()
