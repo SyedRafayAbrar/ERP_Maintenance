@@ -5,15 +5,6 @@ import string
 from django.utils import timezone
 # Create your models here.
 
-class UserInformation(models.Model):
-    id = models.AutoField(primary_key=True)
-    User = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
-    contact_number = models.CharField(max_length=100, default = '')
-    family_members_count = models.IntegerField()
-    
-    class Meta:
-        db_table = "user_information"
-
 class Roles(models.Model):
     id = models.AutoField(primary_key=True)
     role_name = models.CharField(max_length=100); 
@@ -169,3 +160,33 @@ class Complaints_Status(models.Model):
     class Meta:
         db_table = "complaints_status"
         
+class ImagesModel(models.Model):
+    # Your existing fields...
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=255)
+    
+    # New image field
+    image = models.ImageField(upload_to='images/', null=True, blank=True)
+    
+    class Meta:
+        db_table = "images_model"
+        
+
+class Image_User(models.Model):
+    id = models.AutoField(primary_key=True)
+    image = models.ForeignKey(ImagesModel, on_delete=models.CASCADE, default=None)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
+    
+    class Meta:
+        db_table = "image_user"
+        
+
+class UserInformation(models.Model):
+    id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
+    contact_number = models.CharField(max_length=100, default = None, blank = True, null = True)
+    family_members_count = models.IntegerField( default = None,blank = True, null = True)
+    profileImage = models.ForeignKey(Image_User, on_delete=models.CASCADE, default=None, blank = True, null = True)
+    
+    class Meta:
+        db_table = "user_information"

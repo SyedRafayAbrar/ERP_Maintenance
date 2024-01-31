@@ -105,3 +105,24 @@ class  Complaints_Status_Type_Serializer(serializers.ModelSerializer):
     class Meta:
         model = models.Complaints_Status_Types
         fields = "__all__"
+        
+class  Image_Serializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.ImagesModel
+        fields = "__all__"
+        
+class  Image_User_Serializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Image_User
+        fields = ["image"]
+        depth = 1
+        
+class  Image_User_Post_Serializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Image_User
+        fields = "__all__"
+        
+class  User_Info_Serializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.UserInformation
+        fields = "__all__"

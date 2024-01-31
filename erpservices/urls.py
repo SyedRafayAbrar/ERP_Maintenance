@@ -1,5 +1,7 @@
 from django.urls import re_path
 from .views import views,appartmentView, notificationView, customerViews, complaintsView
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     re_path('login', views.login),
@@ -37,4 +39,10 @@ urlpatterns = [
     re_path('add_complaint_status', complaintsView.addComplaintStatus),
     re_path('delete_complaint', complaintsView.deleteComplaint),
     re_path('delete_all_complaints', complaintsView.deleteAllComplaint),
+    
+    re_path('upload', views.uploadImage),
+    re_path('update_user', customerViews.updateUserInfo),
+    re_path('assign_user_info', customerViews.assignUserInfoToUser),
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
