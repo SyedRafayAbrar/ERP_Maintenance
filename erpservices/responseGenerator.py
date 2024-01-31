@@ -16,6 +16,7 @@ class ResponseGenerator:
             response_data['data'] = None
             
         if self.error:
+            print(self.error)
             response_data['error'] = self.error
 
         return JsonResponse(response_data)

@@ -20,7 +20,7 @@ def login(request):
     if not user.check_password(request.data['password']):
         return ResponseGenerator(status=status.HTTP_400_BAD_REQUEST,data={},error="Password incorrect").generate_response()
     token, created = Token.objects.get_or_create(user=user)
-    roleUser = models.Roles_Users.objects.get(user=user)
+    roleUser = models.Roles_Users.objects.filter(user=user).last()
     Role_UserSerializer = serializers.Display_Role_UserSerializer(roleUser)
     resp = {"id":user.id,"user_name": user.username, "email": user.email, "token":token.key, "user_role":Role_UserSerializer.data}
     return ResponseGenerator(status=status.HTTP_200_OK, data=resp).generate_response()
@@ -48,8 +48,8 @@ def signUp(request):
         user.set_password(request.data['password'])
         user.save()
         token = Token.objects.create(user=user)
-        
-        return Response({"token":token.key, "user":serializer.data})
+        resp = {"id":user.id,"user_name": user.username, "email": user.email, "token":token.key}
+        return ResponseGenerator(status=status.HTTP_200_OK,data=resp).generate_response()
     else:
         return ResponseGenerator(status=status.HTTP_400_BAD_REQUEST,data={},error=serializer.errors).generate_response()
              
@@ -122,9 +122,12 @@ def assignUserToAdmin(request):
     else:
         adminCodeModel = models.Invite_Code_User.objects.filter(invite_code = getInvitationCode.id).first()
         serializerObj = {"_admin":adminCodeModel.user.id, "_customer": userId}
+        obj = {"user": userId, "role": 4}
+        roleSerializer = serializers.Role_Post_UserSerializer(data=obj)
         serializer = serializers.Assign_Admin_Customer_Serializer(data=serializerObj)
-        if serializer.is_valid():
+        if serializer.is_valid() and roleSerializer.is_valid():
             serializer.save()
+            roleSerializer.save()
             return ResponseGenerator(status=status.HTTP_200_OK, data=serializer.data).generate_response()
         
         else:
@@ -140,7 +143,8 @@ def addResidenceStatus(request):
     else:
         return ResponseGenerator(status=status.HTTP_400_BAD_REQUEST,data={},error=serializer.errors).generate_response()
 
-
+@authentication_classes([SessionAuthentication, TokenAuthentication])
+@permission_classes([IsAuthenticated])
 @api_view(['POST'])
 def assignResidenceStatus(request):
     serializer = serializers.Customer_Residence_Status_Serializer(data=request.data)

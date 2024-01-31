@@ -23,7 +23,7 @@ def getUserModel(request):
     appartment = models.Appartment_Customer.objects.filter(user_id=user.id).last()
     appartment_serializer = serializers.Appartment_Serializer(appartment.appartment, many=False)
     if token:
-        response = {"user_name": user.username, "email": user.email, "residence_status":residence.residence_status.status_name, "appartment_info":appartment_serializer.data}
+        response = {"id":user.id,"user_name": user.username, "email": user.email, "residence_status":residence.residence_status.status_name, "appartment_info":appartment_serializer.data}
         return ResponseGenerator(status=status.HTTP_200_OK, data=response).generate_response()
         
     else:

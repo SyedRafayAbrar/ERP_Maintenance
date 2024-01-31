@@ -18,6 +18,11 @@ class Role_UserSerializer(serializers.ModelSerializer):
         model = models.Roles_Users
         fields = "__all__"
         depth = 1
+
+class Role_Post_UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Roles_Users
+        fields = "__all__"
         
 class Display_Role_UserSerializer(serializers.ModelSerializer):
     class Meta:

@@ -5,6 +5,15 @@ import string
 from django.utils import timezone
 # Create your models here.
 
+class UserInformation(models.Model):
+    id = models.AutoField(primary_key=True)
+    User = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
+    contact_number = models.CharField(max_length=100, default = '')
+    family_members_count = models.IntegerField()
+    
+    class Meta:
+        db_table = "user_information"
+
 class Roles(models.Model):
     id = models.AutoField(primary_key=True)
     role_name = models.CharField(max_length=100); 
