@@ -126,3 +126,10 @@ class  User_Info_Serializer(serializers.ModelSerializer):
     class Meta:
         model = models.UserInformation
         fields = "__all__"
+        
+                     
+class  Appartment_Residence_Serializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Appartment_Residence_Status
+        fields = "__all__"
+        

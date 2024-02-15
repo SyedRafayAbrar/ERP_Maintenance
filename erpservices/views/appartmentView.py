@@ -48,9 +48,8 @@ def deleteAppartment(request):
         appartment.delete()
         return ResponseGenerator(status=status.HTTP_200_OK, data={"message": "Appartment Deleted successfully"}).generate_response()
     else:
-        return ResponseGenerator(status=status.HTTP_404_NOT_FOUND,data={},error="No Appartment found").generate_response()
+        return ResponseGenerator(status=status.HTTP_404_NOT_FOUND,data={},error="No Appartment found").generate_response()  
 
-    
 @api_view(['PUT'])  # You can also use ['PATCH'] depending on your use case
 @authentication_classes([SessionAuthentication, TokenAuthentication])
 @permission_classes([IsAuthenticated])
@@ -74,3 +73,18 @@ def updateAppartment(request):
     Appartment_Info.save()
 
     return ResponseGenerator(status=status.HTTP_200_OK, data={"message": "Appartment updated successfully"}).generate_response()
+
+
+
+@api_view(['POST'])
+def addStatusAppartment(request):
+    print(request.data)
+    serializer = serializers.Appartment_Residence_Serializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return ResponseGenerator(status=status.HTTP_200_OK, data=serializer.data).generate_response()
+        
+    else:
+        return ResponseGenerator(status=status.HTTP_400_BAD_REQUEST,data={},error=serializer.errors).generate_response()
+  
+  

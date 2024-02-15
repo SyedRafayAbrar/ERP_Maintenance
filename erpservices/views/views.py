@@ -180,4 +180,3 @@ def uploadImage(request):
     else:
         return ResponseGenerator(status=status.HTTP_400_BAD_REQUEST,data={},error=imageUserSerializer.errors).generate_response()
     
-

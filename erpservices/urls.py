@@ -15,14 +15,9 @@ urlpatterns = [
     re_path('assign_invite_code', views.assignInviteCode),
     re_path('assign_user_admin', views.assignUserToAdmin),
     
-    re_path('add_appartment', appartmentView.addAppartment),
-    re_path('delete_appartment', appartmentView.deleteAppartment),
-    re_path('update_appartment', appartmentView.updateAppartment),
-    re_path('get_appartment', appartmentView.getAppartments),
-    
     re_path('add_residence_status', views.addResidenceStatus),
     re_path('assign_residence_status', views.assignResidenceStatus),
-    re_path('get_my_tenants', customerViews.getMyTenants),
+    re_path('get_my_tenants', customerViews.getMyAppartments),
     
     re_path('get_user_model', customerViews.getUserModel),
     

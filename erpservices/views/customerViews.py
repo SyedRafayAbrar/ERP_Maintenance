@@ -38,14 +38,28 @@ def getUserModel(request):
 @api_view(['GET'])
 @authentication_classes([SessionAuthentication, TokenAuthentication])
 @permission_classes([IsAuthenticated])
-def getMyTenants(request):
-    if 'user_id' in request.data:
-        userId = request.data.get('user_id', None)
-        appartmentId = request.data.get('appartment_id', None)
-        customer_appartments = models.Appartment_Customer.objects.filter(appartment_id=appartmentId).exclude(user_id = userId).values_list('appartment', flat=True)
-        print(list(customer_appartments))
-        serial = serializers.Appartment_Serializer(customer_appartments, many=True)
-        return  ResponseGenerator(status=status.HTTP_200_OK, data=serial.data).generate_response()
+def getMyAppartments(request):
+    
+    userId = request.user.id
+        
+    if 'appartment_id' not in request.data: 
+        apartments = models.Appartment_Customer.objects.filter(user_id=userId)
+        apparmtmentArray = [apartment_customer.appartment for apartment_customer in apartments]
+        # apparmtmentUserArray = [apartment_customer.user for apartment_customer in apartments]
+        responseModel = []
+        for appartment in apparmtmentArray:
+            customerResidence = models.Appartment_Residence_Status.objects.get(appartment=appartment)
+            appartmentSerialiser = serializers.Appartment_Serializer(appartment)
+            responseModel.append({'appartment': appartmentSerialiser.data, 'residence_status': customerResidence.residence_status.status_name})
+                
+        return  ResponseGenerator(status=status.HTTP_200_OK, data=responseModel).generate_response()
+        
+        
+    appartmentId = request.data.get('appartment_id', None)
+    customer_appartments = models.Appartment_Customer.objects.filter(appartment_id=appartmentId).exclude(user_id = userId).values_list('appartment', flat=True)
+    # print(list(customer_appartments.count))
+    serial = serializers.Appartment_Serializer(customer_appartments, many=True)
+    return  ResponseGenerator(status=status.HTTP_200_OK, data=serial.data).generate_response()
     
 
 @api_view(['POST'])

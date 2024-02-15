@@ -26,3 +26,15 @@ Content-Type: application/json
 ###
 GET http://127.0.0.1:8000/api/get_roles 
 Content-Type: application/json
+
+###
+
+POST http://127.0.0.1:8000/api/appartment/add_residence_status
+Content-Type: application/json
+
+{
+    "appartment_id": 1,
+    "residence_status_id":1
+}
+
+###
