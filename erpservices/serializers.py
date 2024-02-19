@@ -52,6 +52,11 @@ class  Appartment_Serializer(serializers.ModelSerializer):
         model = models.Appartment_Info
         fields = "__all__"
         
+class  Appartment_Resident_Serializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.AppartmentResident
+        fields = "__all__"
+        
         
 class  Appartment_User_Serializer(serializers.ModelSerializer):
     class Meta:
@@ -126,6 +131,7 @@ class  User_Info_Serializer(serializers.ModelSerializer):
     class Meta:
         model = models.UserInformation
         fields = "__all__"
+        depth = 1
         
                      
 class  Appartment_Residence_Serializer(serializers.ModelSerializer):

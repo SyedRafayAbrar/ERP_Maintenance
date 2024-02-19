@@ -50,7 +50,10 @@ def getMyAppartments(request):
         for appartment in apparmtmentArray:
             customerResidence = models.Appartment_Residence_Status.objects.get(appartment=appartment)
             appartmentSerialiser = serializers.Appartment_Serializer(appartment)
-            responseModel.append({'appartment': appartmentSerialiser.data, 'residence_status': customerResidence.residence_status.status_name})
+            appartmentResident = models.AppartmentResident.objects.get(appartment=appartment)
+            userInfo = models.UserInformation.objects.get(user=appartmentResident.user)
+            userInfoSerial = serializers.User_Info_Serializer(userInfo)
+            responseModel.append({'appartment': appartmentSerialiser.data, 'residence_status': customerResidence.residence_status.status_name, 'resident_info': userInfoSerial.data})
                 
         return  ResponseGenerator(status=status.HTTP_200_OK, data=responseModel).generate_response()
         

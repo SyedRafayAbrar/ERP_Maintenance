@@ -127,7 +127,14 @@ class Appartment_Residence_Status(models.Model):
     class Meta:
         db_table = "appartment_residence_status"
         
-        
+class AppartmentResident(models.Model):
+    id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
+    appartment = models.ForeignKey(Appartment_Info, on_delete=models.CASCADE, default=None)
+    
+    class Meta:
+        db_table = "appartment_resident"
+
 class Complaints_Subject(models.Model):
     id = models.AutoField(primary_key=True)
     subject_name = models.CharField(max_length=100)
